@@ -1,5 +1,6 @@
 import json
 import time
+import calendar
 import random
 import requests
 import urllib3
@@ -136,18 +137,15 @@ def trainers_update():
         trainers[user_name] = inventories[users.index(user)]
 
 trainers = {}
-
-start = time.gmtime()
-minute_wait = 3
+send_poke_time  = 200 + calendar.timegm(time.gmtime()) #initialize time to 200 seconds
 send_pokemon(pokemon_list)
 while True:
 
     #populate with pokemon
     #print(minute_wait)
-    if(time.gmtime()[4] > start[4] + minute_wait or time.gmtime()[3] > start[3]):
+    if(calendar.timegm(time.gmtime()) > send_poke_time):#uses seconds from epoch time instead of min
         send_pokemon(pokemon_list)
-        start = time.gmtime()
-        minute_wait = random.randint(4, 10)
+        send_poke_time = calendar.timegm(time.gmtime()) +  random.randint(240, 600) # between 4 min and 10 min
 
     #gets messages/display names
     message, name = read_message()
