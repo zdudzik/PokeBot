@@ -7,7 +7,7 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 import sqlite3
 conn = sqlite3.connect('pokebot_users.db')
-
+import pbotPost
 from pokemon import pokemon_list
 from pokemon import pokemon_active
 
@@ -25,41 +25,61 @@ AUTH_TOKEN = 'h6s5cmnp5pr77kx6s7ao3huwzh'
 #Checks for valid commands
 def process_commands(message, name):
     #no flag response
-    if(message.lower() == "!pbot"):
-        post_message("PokeBot Says: Thank you for using PokeBot! For a list of commands please use the help or h flag.")
+    message = message.lower()
+    cap_name = name
+    name = name.lower()
+    if(message== "!pbot"):
+        pbotPost.webHook_pbot("Thank you for using PokeBot! For a list of commands please use the help or h flag.")
 
     #help flag
-    if("!pbot h" in message.lower()):
-        post_message("PokeBot Says: ")
+    if("!pbot h" in message):
+        pbotPost.webHook_pbot("PokeBot Says: ")
 
     #catch poke
-    if(message.lower() in pokemon_list):
-        if pokemon_active[message.lower()] == 1:
-            post_message('PokeBot Says: ' + name + ' caught ' + message.lower() +'!')
-            pokemon_active[message.lower()] = 0
-            db_post(name,message.lower())
+    if(message in pokemon_list):
+        if pokemon_active[message] == 1:
+            pbotPost.webHook_pbot('' + cap_name + ' caught ' + message +'!')
+            pokemon_active[message] = 0
+            db_post(name,message)
 
     #check pokemon flag
-    if("!pbot p" in message.lower()):
+    if("!pbot p" in message):
         #print(trainers)
-        if(name.lower() in trainers):
+        if(name in trainers):
             mypokemon = ''
-            for pokemon in trainers[name.lower()]:
+            for pokemon in trainers[name]:
                 #print(pokemon)
                 mypokemon = mypokemon + ' :' + pokemon + ': '
-            post_message('PokeBot Says: Displaying ' + name + '\'s Pokemon.')
-            post_message(mypokemon)
+            pbotPost.webHook_pbot('PokeBot Says: Displaying ' + cap_name + '\'s Pokemon.')
+            pbotPost.webHook_pbot(mypokemon)
         else:
-            post_message('Pokebot Says: You have no pokemon.')
-    
-    if("!sp" is message.lower()):
-        send_pokemon(pokemon_list)
+            pbotPost.webHook_pbot('Pokebot Says: You have no pokemon.')
 
 #posts a message in the channel
 def post_message(s):
     data = {'channel_id': bearer_token, 'message': s}
     headers = {'Authorization': 'Bearer ' + AUTH_TOKEN}
     requests.post(POST_URL, json= data, headers= headers, verify= False)
+
+def post_messages_webHook_pbot(s):
+    url = 'https://mattermost.hyland.com/hooks/enank36nm3fzietx6c9o6pzsqy'
+    headers = {'Content-Type' : 'application/json'}
+    data = {
+        'username':'Poke-Bot',
+        'icon_url': 'https://images.discordapp.net/avatars/424911754242555904/57bcc9cd16a736279dd8d4f8d875b6fb.png',
+        'text': s
+    }
+    requests.post(url, json= data, headers= headers, verify= False)
+
+def post_messages_webHook_pokemonAppear(s):
+    url = 'https://mattermost.hyland.com/hooks/enank36nm3fzietx6c9o6pzsqy'
+    headers = {'Content-Type' : 'application/json'}
+    data = {
+        'username':'A Wild Pokemon Has Appeared!',
+        'icon_url': 'https://unixtitan.net/images/pokeball-clipart-open-4.png',
+        'text': '# :' + s + ':'
+    }
+    requests.post(url, json= data, headers= headers, verify= False)
 
 #gets a message/display name of messages sent in the channel
 def read_message():
@@ -84,7 +104,7 @@ def send_pokemon(pokedex):
     index = random.randint(0, len(pokedex) - 1)
     pokemon = pokedex[index].lower()
     pokemon_active[pokemon] = 1
-    post_message('# :' + pokemon + ':')
+    pbotPost.pokemonAppear(pokemon)
 
 def pokemon_list_to_string(pokemon):
     poke_list = ''
@@ -107,7 +127,7 @@ def db_post(user_name, pokemon):
         conn.commit()
     else:
         
-        trainers[user_name.lower()] = str(pokemon)
+        trainers[user_name.lower()] = [str(pokemon)]
         sql_command = """INSERT INTO USERS VALUES ("{}", "{}");""".format(user_name,pokemon)
         crsr.execute(sql_command) 
         conn.commit()
