@@ -20,7 +20,7 @@ bearer_token = 'xqnwj1aiufg67famh8kthzgqpa'
 
 LISTEN_URL = 'https://mattermost.hyland.com/api/v4/channels/' + bearer_token + '/posts'
 POST_URL = 'https://mattermost.hyland.com/api/v4/posts'
-AUTH_TOKEN = 'h6s5cmnp5pr77kx6s7ao3huwzh'
+AUTH_TOKEN = '-------------------------'
 
 #Checks for valid commands
 def process_commands(message, name):
