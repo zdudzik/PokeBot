@@ -1,15 +1,10 @@
 import requests
 
-bearer_token = 'xqnwj1aiufg67famh8kthzgqpa'
-#Kanto Public id xqnwj1aiufg67famh8kthzgqpa
-#Kanto Region Private id uwkrrxm7c7f19gixuc93rcmr8w
-#intern channel qrfhyetwutnnucb3uuoe3ka1fh
-#for test channel use the token for your dms
-#test channel h6phkma4ibnr3fpdayutxpy7wh
+bearer_token = 'addtokenhere'
 
 LISTEN_URL = 'https://mattermost.hyland.com/api/v4/channels/' + bearer_token + '/posts'
 POST_URL = 'https://mattermost.hyland.com/api/v4/posts'
-AUTH_TOKEN = ''
+AUTH_TOKEN = 'addtokenhere'
 
 POST_URL = 'https://mattermost.hyland.com/api/v4/posts'
 WEBHOOK_URL = 'https://mattermost.hyland.com/hooks/enank36nm3fzietx6c9o6pzsqy'
