@@ -13,8 +13,8 @@ from pokemon import pokemon_active
 
 bearer_token = 'addtokenhere'
 
-LISTEN_URL = 'https://mattermost.hyland.com/api/v4/channels/' + bearer_token + '/posts'
-POST_URL = 'https://mattermost.hyland.com/api/v4/posts'
+LISTEN_URL = 'https://mattermost.xxxxxxx.com/api/v4/channels/' + bearer_token + '/posts'
+POST_URL = 'https://mattermost.xxxxxx.com/api/v4/posts'
 AUTH_TOKEN = 'addtokenhere'
 
 #Checks for valid commands
