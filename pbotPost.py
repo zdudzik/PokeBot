@@ -2,8 +2,8 @@ import requests
 
 bearer_token = 'addtokenhere'
 
-LISTEN_URL = 'https://mattermost.hyland.com/api/v4/channels/' + bearer_token + '/posts'
-POST_URL = 'https://mattermost.hyland.com/api/v4/posts'
+LISTEN_URL = 'https://mattermost.xxxxxxx.com/api/v4/channels/' + bearer_token + '/posts'
+POST_URL = 'https://mattermost.xxxxxxx.com/api/v4/posts'
 AUTH_TOKEN = 'addtokenhere'
 
 POST_URL = 'https://mattermost.hyland.com/api/v4/posts'
